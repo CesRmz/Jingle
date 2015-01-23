@@ -2,6 +2,9 @@
 Thumbs.db
 ehthumbs.db
 
+# PHPStorm stuff
+.idea
+
 # Folder config file
 Desktop.ini
 
