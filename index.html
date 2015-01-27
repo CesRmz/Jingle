@@ -19,7 +19,20 @@
         </li>
     </ul>
 
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
     <script src="app.js"></script>
+    <script>
+        console.log("heure");
+        $.ajax({
+            type: "POST",
+            url: "API/coordenadas",
+            data: "usuarioID=" + 1 + "&lat=" + -243.243 + "&lon=" + 234.430,
+            success: function (data)
+            {
+
+            }
+        });
+    </script>
 </body>
 </html>
