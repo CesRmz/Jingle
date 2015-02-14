@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<label>Usuario</label>
+<input type="text" id="usuarioVal" />
+
+<label>Password</label>
+<input type="text" id="passwordVal" />
+
+<button onclick="llamarAPI()">Probar</button>
+
+<script src="librerias/jQuery.js"></script>
+<script>
+    function llamarAPI()
+    {
+        var usuario = $("#usuarioVal").val();
+        var password = $("#passwordVal").val();
+
+        $.ajax({
+            type: "POST",
+            url: "API/usuarios/login",
+            data: "",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", make_base_auth(usuario, password));
+            },
+            success: function (data)
+            {
+                alert("success");
+            }
+        });
+    }
+
+    function make_base_auth(user, password)
+    {
+        var tok = user + ':' + password;
+        var hash = btoa(tok);
+        return "Basic " + hash;
+    }
+</script>
+</body>
+</html>

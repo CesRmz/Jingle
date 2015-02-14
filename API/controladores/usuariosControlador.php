@@ -2,19 +2,22 @@
 /**
  * Created by PhpStorm.
  * User: Yozki
- * Date: 26/01/2015
- * Time: 09:28 PM
+ * Date: 14/02/2015
+ * Time: 03:05 PM
  */
 
-class coordenadasControlador
+class usuariosControlador
 {
     public function procesar($metodo, $verbo, $argumentos)
     {
         switch($metodo)
         {
             case "POST":
-                $this->acceso();
-                return $this->nuevoRegistro($_POST['lat'], $_POST['lon']);
+                if($verbo == "login")
+                {
+                    $this->acceso();
+                    return $this->datosUsuario();
+                }
                 break;
             default:
                 return 404;
@@ -23,7 +26,7 @@ class coordenadasControlador
         return 404;
     }
 
-    public function nuevoRegistro($latitud, $longitud)
+    public function datosUsuario()
     {
         $user = $_SERVER['PHP_AUTH_USER'];
         $password = $_SERVER['PHP_AUTH_PW'];
@@ -32,9 +35,7 @@ class coordenadasControlador
 
         if(!is_null($usuario->usuarioID))
         {
-            $query = "INSERT INTO registro SET usuarioID = $usuario->usuarioID, fecha = NOW(), latitud = $latitud, longitud = $longitud";
-            APIDatabase::insert($query);
-            return 201;
+            return $usuario;
         }
         else return 401;
     }

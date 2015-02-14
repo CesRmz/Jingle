@@ -1,0 +1,20 @@
+1. [POST] API/coordenadas
+envias:
+(Basic Auth)
+lat: double
+lon: double
+
+regresa:
+{}
+--------------------------------------------------
+2. [POST] API/login
+envias:
+(Basic Auth)
+
+regresa:
+{
+	usuarioID: int
+	nombre: string
+	usuario: string
+	password: string
+}

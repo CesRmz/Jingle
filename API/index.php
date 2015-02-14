@@ -8,7 +8,7 @@
 
 include_once("clases/MyAPI.php");
 include_once("clases/APIDatabase.php");
-//include_once("clases/Acceso.php");
+include_once("clases/Usuario.php");
 
 /** AUTOLOADER de clases */
 spl_autoload_register('apiAutoload');
