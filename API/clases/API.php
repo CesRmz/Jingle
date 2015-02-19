@@ -114,6 +114,7 @@ abstract class API
 
     private function _response($data, $status = 200)
     {
+        header('Content-Type: application/json');
         header("HTTP/1.1 " . $status . " " . $this->_requestStatus($status));
         return $data;
     }

@@ -16,6 +16,10 @@ class coordenadasControlador
                 $this->acceso();
                 return $this->nuevoRegistro($_POST['lat'], $_POST['lon']);
                 break;
+            case "GET":
+                $this->acceso();
+                return $this->getCoordenadasUsuario();
+                break;
             default:
                 return 404;
                 break;
@@ -35,6 +39,20 @@ class coordenadasControlador
             $query = "INSERT INTO registro SET usuarioID = $usuario->usuarioID, fecha = NOW(), latitud = $latitud, longitud = $longitud";
             APIDatabase::insert($query);
             return 201;
+        }
+        else return 401;
+    }
+    public function getCoordenadasUsuario()
+    {
+        $user = $_SERVER['PHP_AUTH_USER'];
+        $password = $_SERVER['PHP_AUTH_PW'];
+
+        $usuario = Usuario::nuevoUsuarioLogin($user, $password);
+
+        if(!is_null($usuario->usuarioID))
+        {
+            $coordenadas = $usuario->getCoordenadas();
+            return $coordenadas;
         }
         else return 401;
     }

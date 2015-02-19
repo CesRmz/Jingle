@@ -25,7 +25,8 @@
             type: "POST",
             url: "API/usuarios/login",
             data: "",
-            beforeSend: function (xhr) {
+            dataType: "json",
+            beforeSend: function (xhr){
                 xhr.setRequestHeader("Authorization", make_base_auth(usuario, password));
             },
             success: function (data)

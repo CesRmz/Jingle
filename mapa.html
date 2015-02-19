@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Mapa</title>
+    <style type="text/css">
+        html, body, #map-canvas
+        {
+            height: 500px;
+            width: 500px;
+            margin: 50px auto;
+        }
+    </style>
+</head>
+<body>
+
+<label>Usuario</label>
+<input type="text" id="usuarioVal" />
+
+<label>Password</label>
+<input type="text" id="passwordVal" />
+
+<div id="map-canvas"></div>
+
+<button onclick="trazarRuta();">Probar</button>
+
+<div id="respuesta">
+
+</div>
+
+<script src="librerias/jQuery.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5Yr3gaObU-vfFbG1XC80DHrruCQF04UY"></script>
+<script type="text/javascript">
+    var puntos = [];
+    var wayPoints = [];
+    var map;
+    var directionsDisplay;
+
+    function initialize()
+    {
+        directionsDisplay = new google.maps.DirectionsRenderer();
+
+        var center = new google.maps.LatLng(25.572486, -103.422258);
+        var mapOptions = {
+            center: center,
+            zoom: 15
+        };
+
+        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+        directionsDisplay.setMap(map);
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+    function trazarRuta()
+    {
+        var usuario = $("#usuarioVal").val();
+        var password = $("#passwordVal").val();
+
+        $.ajax({
+            type: "GET",
+            url: "API/coordenadas",
+            data: "",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", make_base_auth(usuario, password));
+            },
+            success: function (historial)
+            {
+                for(var i in historial)
+                {
+                    var temp = new google.maps.LatLng(historial[i].lat, historial[i].lon);
+                    puntos.push(temp);
+                    $("#respuesta").append(historial[i].lat + "," + historial[i].lon + "\n<br />");
+
+                    wayPoints.push({
+                        location: new google.maps.LatLng(historial[i].lat, historial[i].lon),
+                        stopover: true
+                    });
+                }
+
+
+
+                var servicio = new google.maps.DirectionsService();
+
+                // DirectionsRequest
+                var dirRequest = {
+                    origin: puntos[0].k + "," + puntos[0].D,
+                    destination: puntos[2].k + "," + puntos[2].D,
+                    travelMode: google.maps.TravelMode.WALKING,
+                    unitSystem: google.maps.UnitSystem.METRIC,
+                    waypoints: wayPoints,
+                    optimizeWaypoints: true,
+                    region: "MX"
+                };
+
+                console.dir(dirRequest);
+
+                servicio.route(dirRequest, function(response, status) {
+                    if (status == google.maps.DirectionsStatus.OK) {
+                        directionsDisplay.setDirections(response);
+                    }
+                    else
+                    {
+                        console.log("NOPE");
+                        console.dir(response);
+                    }
+                });
+            }
+        });
+    }
+
+    function make_base_auth(user, password)
+    {
+        var tok = user + ':' + password;
+        var hash = btoa(tok);
+        return "Basic " + hash;
+    }
+</script>
+</body>
+</html>

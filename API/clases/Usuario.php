@@ -30,4 +30,11 @@ class Usuario
         $res = APIDatabase::select($query);
         return new self($res[0]['usuarioID']);
     }
+
+    public function getCoordenadas()
+    {
+        $query = "SELECT fecha, latitud AS lat, longitud AS lon FROM registro WHERE usuarioID = $this->usuarioID";
+        $res = APIDatabase::select($query);
+        return $res;
+    }
 }
