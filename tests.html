@@ -23,9 +23,9 @@
 
         $.ajax({
             type: "POST",
-            url: "API/usuarios/login",
+            url: "http://jingle.nop.al/API/usuarios/login",
+            contentType: 'json',
             data: "",
-            dataType: "json",
             beforeSend: function (xhr){
                 xhr.setRequestHeader("Authorization", make_base_auth(usuario, password));
             },
