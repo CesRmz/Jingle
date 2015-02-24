@@ -1,7 +1,6 @@
 
    function llamarAPI()
     {
-		debugger;
         var usuario = $("#usuarioVal").val();
         var password = $("#passwordVal").val();
         $.ajax({
